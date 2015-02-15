@@ -70,7 +70,7 @@ app.configure(function () {
         });
     }, config.updateTopAccountsInterval);
 
-    setInterval(function () {
+    /*setInterval(function () {
         bter.getXCRBTC(function (err, result) {
             if (err) {
                 console.log("Loading BTC/XCR failed...");
@@ -90,7 +90,7 @@ app.configure(function () {
                 }
             });
         });
-    }, config.updateBterInterval);
+    }, config.updateBterInterval);*/
 
 
     app.use(express.logger());
@@ -190,6 +190,10 @@ app.get("*", function (req, res, next) {
     }
 });
 
+app.bterBtc = "~";
+app.bterXcr = "~";
+
+
 async.parallel([
     function (cb) {
         console.log("Getting top accounts...");
@@ -204,7 +208,7 @@ async.parallel([
             }
         });
     },
-    function (cb) {
+    /*function (cb) {
         console.log("Loading BTC/USD curs from bter...");
         bter.getBTCUSD(function (err, result) {
             if (err) {
@@ -229,7 +233,7 @@ async.parallel([
                 cb();
             }
         });
-    }
+    }*/
 ], function (err) {
     app.listen(app.get("port"), app.get("host"), function (err) {
         if (err) {
