@@ -52,13 +52,13 @@ app.configure(function () {
         return next();
     });
 
-    app.use(function (req, res, next) {
+    /*app.use(function (req, res, next) {
         req.convertXCR = function (amount) {
             return bter.convertXCRTOUSD(amount, app.bterXcr, app.bterBtc).toFixed(3);
         }
 
         return next();
-    });
+    });*/
 
     setInterval(function () {
         topAccounts(app.get("crypti address"), function (err, accounts) {
