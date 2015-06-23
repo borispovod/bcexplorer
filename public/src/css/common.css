@@ -32,12 +32,24 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: 'Roboto', 'Ubuntu', sans-serif;
 }
 
+h1>small {
+  white-space: nowrap;
+}
+
 a, a:hover, a:visited, a:focus {
   color: #1F9BDE;
 }
 
+/* Bootstrap fix for ui.bootstrap */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide {
   display: none !important;
+}
+
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+  color: white;
+  background-color: #434752;
 }
 
 /* Styling for the ngProgress itself */
@@ -49,7 +61,7 @@ a, a:hover, a:visited, a:focus {
   margin: 0;
   opacity: 0;
   padding: 0;
-  z-index: 99998;
+  z-index: 998;
   /* Add CSS3 styles for transition smoothing */
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -65,7 +77,7 @@ a, a:hover, a:visited, a:focus {
   top: 80px;
   left: 0;
   right: 0;
-  z-index: 99999;
+  z-index: 999;
 }
 
 /* QR modal */
@@ -131,6 +143,17 @@ a, a:hover, a:visited, a:focus {
 
 .btn-group .btn+.btn, .btn-group .btn+.btn-group, .btn-group .btn-group+.btn, .btn-group .btn-group+.btn-group {
   margin-left: 0;
+}
+
+.table>tbody>tr>td {
+  vertical-align: middle;
+}
+
+@media (max-width: 320px) {
+  .table-responsive td:first-of-type {
+    max-width: 150px;
+    overflow: hidden;
+  }
 }
 
 .table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th {
@@ -229,7 +252,6 @@ a, a:hover, a:visited, a:focus {
 }
 
 .navbar-form {
-  /*width: 35%;*/
   margin-top: 20px;
 }
 
@@ -267,6 +289,7 @@ a, a:hover, a:visited, a:focus {
   background-image: url(/img/logo.png);
   background-size: 250px 56px;
   background-position: -125px 0px;
+  margin-top: 1px;
   height: 56px;
   width: 125px;
 }
@@ -303,18 +326,24 @@ a, a:hover, a:visited, a:focus {
 #search { font-family: 'Roboto', 'Ubuntu', sans-serif; }
 
 #search.loading {
-  background-image: url('/img/loading.gif');
-  background-position: 5px center;
-  background-repeat: no-repeat;
-  padding-left: 25px;
+  color: white;
+  background-color: #1F9BDE;
+  -webkit-animation-name: loading;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: example;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
-.loader-gif {
-  display: inline-block;
-  width: 16px;
-  height: 11px;
-  background: transparent url(../img/loading.gif) no-repeat;
-  margin-left: 5px;
+@-webkit-keyframes loading {
+  from { background-color: #1F9BDE; }
+  to { background-color: #38B449; }
+}
+
+@keyframes loading {
+    from { background-color: #1F9BDE; }
+    to { background-color: #38B449; }
 }
 
 #search::-webkit-input-placeholder {
@@ -531,16 +560,34 @@ a, a:hover, a:visited, a:focus {
 #footer {
   background-color: #343844;
   color: white;
-  height: 51px;
+  height: 48px;
   overflow: hidden;
+  padding-top: 8px;
+}
+
+#footer .col-left {
+  padding: 0;
+  text-align: left;
+}
+
+#footer .col-left a {
+  margin-right: 20px;
+}
+
+#footer .col-right {
+  padding: 0;
+  text-align: right;
+}
+
+#footer .col-right a {
+  color: #454954;
+  margin-left: 10px;
 }
 
 #footer a, #footer a:focus, #footer a:active {
   color: white;
-  margin-top: 17px;
-  margin-right: 20px;
-  display: block;
-  float: left;
+  line-height: 32px;
+  display: inline-block;
   font-size: 14px;
 }
 
@@ -599,9 +646,10 @@ a, a:hover, a:visited, a:focus {
   text-align: center;
   top: 45px;
   width: 275px;
+  z-index: 9999;
 }
 
-/*Animations*/
+/* Animations */
 .fader.ng-enter {
   opacity: 0;
   -webkit-transition: opacity 1s;
@@ -661,32 +709,33 @@ a, a:hover, a:visited, a:focus {
 .badge-inverse:hover { background-color: #1a1a1a; }
 
 .btn-copy {
-  color: #9b9b9b;
+  color: #999;
   display: inline-block;
-  height: 16px;
-  width: 16px;
   outline: none;
-  vertical-align: sub;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .btn-expand {
-  color: #9b9b9b;
+  color: #999;
   vertical-align: middle;
 }
 
 .btn-copy:hover, .btn-expand:hover {
-  color: black;
+  color: #999;
   text-decoration: none;
 }
 
-.btn-copy {
-  background: transparent url('/img/icons/copy.png') center center no-repeat;
+.btn-copy:before {
+  font-size: 14px;
+  font-family: "FontAwesome";
+  content: "\f0ea";
 }
 
 .btn-copy .tooltip {
   display: block;
-  margin-left: 20px;
-  margin-top: -2px;
+  margin-left: 16px;
+  margin-top: -22px;
   opacity: 0;
 }
 
@@ -699,7 +748,8 @@ a, a:hover, a:visited, a:focus {
   border-right-color: #39B54A;
 }
 
-.btn-copy.zeroclipboard-is-hover { color: #2a6496; }
+.btn-copy.zeroclipboard-is-hover {
+}
 
 .btn-copy.zeroclipboard-is-active .tooltip { opacity: 1; }
 
@@ -836,3 +886,51 @@ a.v_highlight_more {
 @media (min-width: 768px) {
   #search { color: #9b9d9e; }
 }
+
+.big-info {
+  padding-bottom: 23px;
+  padding-top: 23px;
+}
+
+.big-info p.small-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-top: 6px;
+  opacity: 0.5;
+}
+
+.big-info p.big-details {
+  font-weight: 200;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+/* Fades */
+
+.fadein {
+  opacity: 0;
+  -webkit-animation: fadeIn ease-in 1;
+  -moz-animation: fadeIn ease-in 1;
+  -o-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-delay: 0.25s;
+  -moz-animation-delay: 0.25s;
+  -o-animation-delay: 0.25s;
+  animation-delay: 0.25s;
+}
+
+@-webkit-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@-moz-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@-o-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

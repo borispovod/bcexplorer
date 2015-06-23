@@ -1,7 +1,7 @@
 <section data-ng-controller="BlocksController">
   <h1>Block <small>{{block.id}}</small></h1>
   <div class="text-muted" data-ng-if="!block.height">
-    <span>Loading Block <span class="loader-gif"></span>
+    <span>Loading Block <i class="fa fa-spinner fa-spin"></i>
   </div>
   <div data-ng-if="block.height">
     <div class="well well-sm ellipsis">
@@ -12,60 +12,65 @@
     <h2>Summary</h2>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-responsive">
-          <tbody>
-          <tr>
-            <td><strong>Transactions</strong></td>
-            <td class="text-right text-muted">{{block.numberOfTransactions}}</td>
-          </tr>
-          <tr>
-            <td><strong>Confirmations</strong></td>
-            <td class="text-right text-muted">{{block.confirmations}}</td>
-          </tr>
-          <tr>
-            <td><strong>Height</strong></td>
-            <td class="text-right text-muted">{{block.height}}</td>
-          </tr>
-          <tr>
-            <td><strong>Total Fee</strong></td>
-            <td class="text-right text-muted">{{block.totalFee}} XCR</td>
-          </tr>
-          <tr>
-            <td><strong>Total Amount</strong></td>
-            <td class="text-right text-muted">{{block.totalAmount}} XCR</td>
-          </tr>
-          <tr>
-            <td><strong>USD equivalent</strong></td>
-            <td class="text-right text-muted">{{ block.usd }} USD</td>
-          </tr>
-          <tr>
-            <td><strong>Timestamp</strong></td>
-            <td class="text-right text-muted">{{block.timestamp | timestamp}}</td>
-          </tr>
-          <tr data-ng-show="block.nextBlock">
-            <td><strong>Next block</strong></td>
-            <td class="text-right text-muted">
-              <a href="/block/{{ block.nextBlock }}">{{ block.nextBlock }}</a>
-            </td>
-          </tr>
-          <tr data-ng-show="block.previousBlock">
-            <td><strong>Previous block</strong></td>
-            <td class="text-right text-muted">
-              <a href="/block/{{ block.previousBlock }}">{{ block.previousBlock }}</a>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Generator</strong></td>
-            <td class="text-right text-muted">
-              <a href="/address/{{block.generatorId}}">{{block.generatorId}}</a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><strong>Transactions</strong></td>
+                <td class="text-right">{{block.numberOfTransactions}}</td>
+              </tr>
+              <tr>
+                <td><strong>Confirmations</strong></td>
+                <td class="text-right">{{block.confirmations}}</td>
+              </tr>
+              <tr>
+                <td><strong>Height</strong></td>
+                <td class="text-right">{{block.height}}</td>
+              </tr>
+              <tr>
+                <td><strong>Total Fee</strong></td>
+                <td class="text-right">{{block.totalFee}} <span class="text-muted">XCR</span></td>
+              </tr>
+              <tr>
+                <td><strong>Total Amount</strong></td>
+                <td class="text-right">{{block.totalAmount}} <span class="text-muted">XCR</span></td>
+              </tr>
+              <tr>
+                <td><strong>USD equivalent</strong></td>
+                <td class="text-right">{{ block.usd }} USD</td>
+              </tr>
+              <tr>
+                <td><strong>Timestamp</strong></td>
+                <td class="text-right">{{block.timestamp | timestamp}}</td>
+              </tr>
+              <tr data-ng-if="block.nextBlock">
+                <td><strong>Next block</strong></td>
+                <td class="text-right">
+                  <a href="/block/{{ block.nextBlock }}">{{ block.nextBlock }}</a>
+                </td>
+              </tr>
+              <tr data-ng-if="block.previousBlock">
+                <td><strong>Previous block</strong></td>
+                <td class="text-right">
+                  <a href="/block/{{ block.previousBlock }}">{{ block.previousBlock }}</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Generator</strong></td>
+                <td class="text-right">
+                  <a href="/address/{{block.generatorId}}">{{block.generatorId}}</a>
+                  &nbsp;/&nbsp;
+                  <span class="delegate text-muted">{{block.delegate.username || 'Genesis'}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+    </div>
   </div>
-  <div data-ng-if="block.transactions.length > 0">
-    <h3>Transactions</h3>
+  <div data-ng-if="block.height" data-ng-init="txs.loadData()">
+    <h2>Transactions</h2>
     <div data-ng-include src="'/views/transaction/list.html'"></div>
   </div>
 </section>

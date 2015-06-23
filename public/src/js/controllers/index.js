@@ -1,8 +1,5 @@
 'use strict';
 
-var TRANSACTION_DISPLAYED = 20;
-var BLOCKS_DISPLAYED = 20;
-
 angular.module('cryptichain.system').controller('IndexController',
   function ($scope, $http, $interval) {
       $scope.getLastBlocks = function () {
@@ -21,7 +18,7 @@ angular.module('cryptichain.system').controller('IndexController',
 
       $scope.blocksInterval = $interval(function () {
           $scope.getLastBlocks();
-      }, 30000);
+      }, 10000);
 
       $scope.getLastBlocks();
 
@@ -41,7 +38,7 @@ angular.module('cryptichain.system').controller('IndexController',
 
       $scope.transactionsInterval = $interval(function () {
           $scope.getLastTransactions();
-      }, 30000);
+      }, 10000);
 
       $scope.getLastTransactions();
   });

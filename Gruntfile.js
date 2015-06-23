@@ -6,6 +6,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-css');
     grunt.loadNpmTasks('grunt-markdown');
     grunt.loadNpmTasks('grunt-macreload');
@@ -29,10 +30,10 @@ module.exports = function (grunt) {
                 src: ['bower_components/momentjs/min/moment.min.js',
                       'bower_components/leaflet/dist/leaflet.js',
                       'bower_components/leaflet.markercluster/dist/leaflet.markercluster.js',
-                      'bower_components/underscore/underscore-min.js',
-                      'bower_components/zeroclipboard/ZeroClipboard.min.js',
                       'bower_components/sigma/sigma.min.js',
-                      'bower_components/sigma/plugins/*.min.js'],
+                      'bower_components/sigma/plugins/*.min.js',
+                      'bower_components/underscore/underscore-min.js',
+                      'bower_components/zeroclipboard/ZeroClipboard.min.js'],
                 dest: 'public/js/vendors.js'
             },
             angular: {
@@ -60,6 +61,7 @@ module.exports = function (grunt) {
             },
             css: {
                 src: ['bower_components/bootstrap/dist/css/bootstrap.min.css',
+                      'bower_components/font-awesome/css/font-awesome.min.css',
                       'bower_components/leaflet/dist/leaflet.css',
                       'bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css',
                       'public/src/css/**/*.css'],
@@ -118,6 +120,28 @@ module.exports = function (grunt) {
                 tasks: ['concat:css', 'cssmin'],
             },
         },
+        copy: {
+            dist: {
+                files: [
+                    {
+                        // Copy Bootstrap fonts to public/fonts.
+                        expand: true,
+                        dot: true,
+                        cwd: 'bower_components/bootstrap/dist',
+                        src: ['fonts/*.*'],
+                        dest: 'public'
+                    },
+                    {
+                        // Copy Font-awesome fonts to public/fonts.
+                        expand: true,
+                        dot: true,
+                        cwd: 'bower_components/font-awesome',
+                        src: ['fonts/*.*'],
+                        dest: 'public'
+                    }
+                ]
+            },
+        },
         nggettext_extract: {
             pot: {
                 files: {
@@ -144,7 +168,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['watch']);
 
     // Compile task (concat + minify).
-    grunt.registerTask('compile', ['nggettext_extract', 'nggettext_compile', 'concat', 'uglify', 'cssmin']);
+    grunt.registerTask('compile', ['nggettext_extract', 'nggettext_compile', 'concat', 'uglify', 'cssmin', 'copy']);
 
     // Copy ZeroClipboard.swf to public/swf.
     grunt.file.copy('bower_components/zeroclipboard/ZeroClipboard.swf', 'public/swf/ZeroClipboard.swf');

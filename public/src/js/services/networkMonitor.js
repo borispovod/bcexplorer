@@ -64,6 +64,15 @@ var NetworkMonitor = function ($scope) {
         }
     }
 
+    this.sortedPeers = function (peers) {
+        var sortBy = function (peer) { return peer.ip; };
+
+        peers.connected    = _.sortBy(peers.connected, sortBy);
+        peers.disconnected = _.sortBy(peers.disconnected, sortBy);
+
+        return peers;
+    }
+
     this.counter = function (peers) {
         var platforms = new Platforms(),
             versions  = new Versions(peers.connected);
@@ -84,7 +93,7 @@ var NetworkMonitor = function ($scope) {
     }
 
     this.updatePeers = function (peers) {
-        this.$scope.peers   = peers.list;
+        this.$scope.peers   = this.sortedPeers(peers.list);
         this.$scope.counter = this.counter(peers.list);
         this.map.addConnected(peers.list);
     }
@@ -93,14 +102,9 @@ var NetworkMonitor = function ($scope) {
         this.$scope.lastBlock = lastBlock.block;
     }
 
-    this.updateBestBlock = function (bestBlock) {
-        this.$scope.bestBlock = bestBlock.block;
-    }
-
-    this.updateVolume = function (volume) {
-        this.$scope.volAmount    = volume.amount;
-        this.$scope.volBeginning = volume.beginning;
-        this.$scope.volEnd       = volume.end;
+    this.updateBlocks = function (blocks) {
+        this.$scope.bestBlock = blocks.best;
+        this.$scope.volume    = blocks.volume;
     }
 }
 
@@ -179,6 +183,11 @@ var NetworkMap = function () {
     var popupContent = function (p) {
         var content = '<p class="ip">'.concat(p.ip, '</p>');
 
+        if (p.location.hostname) {
+            content += '<p class="hostname">'
+               .concat('<span class="label">Hostname: </span>', p.location.hostname, '</p>');
+        }
+
         content += '<p class="version">'
            .concat('<span class="label">Version: </span>', p.version, '</p>');
 
@@ -213,8 +222,7 @@ angular.module('cryptichain.tools').factory('networkMonitor',
           ns.on('data', function (res) {
               networkMonitor.updatePeers(res.peers);
               networkMonitor.updateLastBlock(res.lastBlock);
-              networkMonitor.updateBestBlock(res.bestBlock);
-              networkMonitor.updateVolume(res.volume);
+              networkMonitor.updateBlocks(res.blocks);
           });
 
           ns.on('data1', function (res) {
@@ -222,8 +230,7 @@ angular.module('cryptichain.tools').factory('networkMonitor',
           });
 
           ns.on('data2', function (res) {
-              networkMonitor.updateBestBlock(res.bestBlock);
-              networkMonitor.updateVolume(res.volume);
+              networkMonitor.updateBlocks(res.blocks);
           });
 
           ns.on('data3', function (res) {

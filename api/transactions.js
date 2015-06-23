@@ -1,8 +1,10 @@
-var api = require('../lib/api');
+var transactions = require('../lib/api/transactions');
 
 module.exports = function (app) {
+    var api = new transactions(app);
+
     app.get("/api/getTransaction", function (req, res, next) {
-        new api.transactions(app).getTransaction(
+        api.getTransaction(
             req.query.transactionId,
             function (data) { res.json(data); },
             function (data) { req.json = data; return next(); }
@@ -10,21 +12,21 @@ module.exports = function (app) {
     });
 
     app.get("/api/getUnconfirmedTransactions", function (req, res, next) {
-        new api.transactions(app).getUnconfirmedTransactions(
+        api.getUnconfirmedTransactions(
             function (data) { res.json(data); },
             function (data) { req.json = data; return next(); }
         );
     });
 
     app.get("/api/getLastTransactions", function (req, res, next) {
-        new api.transactions(app).getLastTransactions(
+        api.getLastTransactions(
             function (data) { res.json(data); },
             function (data) { req.json = data; return next(); }
         );
     });
 
     app.get("/api/getTransactionsByAddress", function (req, res, next) {
-        new api.transactions(app).getTransactionsByAddress(
+        api.getTransactionsByAddress(
             { address : req.query.address,
               offset  : req.query.offset,
               limit   : req.query.limit },
@@ -34,8 +36,10 @@ module.exports = function (app) {
     });
 
     app.get("/api/getTransactionsByBlock", function (req, res, next) {
-        new api.transactions(app).getTransactionsByBlock(
-            req.query.blockId,
+        api.getTransactionsByBlock(
+          { blockId : req.query.blockId,
+            offset  : req.query.offset,
+            limit   : req.query.limit },
             function (data) { res.json(data); },
             function (data) { req.json = data; return next(); }
         );

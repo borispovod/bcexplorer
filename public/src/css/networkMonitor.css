@@ -1,26 +1,26 @@
-.big-info {
-  padding-bottom: 23px;
-  padding-top: 23px;
-}
-
-.big-info p.small-title {
+.big-details span.connected-peers {
   font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-top: 6px;
-  opacity: 0.5;
 }
 
-.big-info p.big-details {
-  font-weight: 200;
-  font-size: 24px;
-  line-height: 32px;
+.os-icon {
+  display: inline-block;
+  vertical-align: middle;
 }
 
-p.big-details span.connected-peers {
-  font-weight: 700;
+.os-0 {
+  background-image: url(/img/os/0.png);
+}
+
+.os-1 {
+  background-image: url(/img/os/1.png);
+}
+
+.os-2 {
+  background-image: url(/img/os/2.png);
+}
+
+.os-3 {
+  background-image: url(/img/os/3.png);
 }
 
 #map {
@@ -54,9 +54,11 @@ div.platforms {
   min-height: 58px;
 }
 
-div.platforms img.os-icon {
+div.platforms .os-icon {
   width: 48px;
   height: 48px;
+  line-height: 48px;
+  background-size: 48px 48px;
 }
 
 div.platforms span.windows-counter {
@@ -118,9 +120,16 @@ table.peers td {
   overflow: hidden;
 }
 
+table.peers td .hostname {
+  max-width: 300px;
+}
+
 table.peers td .os-icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  display: inline-block;
+  background-size: 24px 24px;
 }
 
 table.peers .peer-state:before {

@@ -1,36 +1,23 @@
-var express = require('express'),
-    config = require('./config.json').configuration,
+var express = require("express"),
+    config = require("./config.json").configuration,
+    client = require("./redis")(config),
     development = config.development,
     production = config.production,
     routes = require("./api"),
-    path = require('path'),
-    redis = require("redis"),
-    client = redis.createClient(
-        config.redis.port,
-        config.redis.host
-    ),
-    cache = require('./cache.js')
-    async = require('async');
+    path = require("path"),
+    cache = require("./cache")
+    async = require("async");
 
-if (config.redis.password) {
-    client.auth(config.redis.password, function (err) {
-        if (err) {
-            console.log(err);
-            console.log("Can't connect to redis");
-        }
-    });
-}
+var app = express(), utils = require("./utils");
 
-var utils = require('./utils'),
-    topAccounts = utils.topAccounts;
-
-var app = express();
 app.exchange = new utils.exchange(config),
+app.knownAddresses = new utils.knownAddresses();
+app.knownAddresses.load();
 
 app.configure(function () {
-    app.set('version', '0.3');
+    app.set("version", "0.3");
 
-    app.set('strict routing', true);
+    app.set("strict routing", true);
 
     app.set("crypti address", "http://" + config.crypti.host + ":" + config.crypti.port);
     app.set("freegeoip address", "http://" + config.freegeoip.host + ":" + config.freegeoip.port);
@@ -41,16 +28,6 @@ app.configure(function () {
         req.redis = client;
         return next();
     });
-
-    setInterval(function () {
-        topAccounts(app.get("crypti address"), function (err, accounts) {
-            if (err) {
-                console.log(err);
-            } else {
-                app.topAccounts = accounts;
-            }
-        });
-    }, config.updateTopAccountsInterval);
 
     app.use(express.logger());
     app.use(express.static(path.join(__dirname, "public")));
@@ -70,7 +47,7 @@ app.configure("production", function () {
 });
 
 app.use(function (req, res, next) {
-    if (req.originalUrl.split('/')[1] != 'api') {
+    if (req.originalUrl.split("/")[1] != "api") {
         return next();
     }
 
@@ -109,9 +86,9 @@ routes(app);
 console.log("Routes loaded");
 
 app.use(function (req, res, next) {
-    console.log(req.originalUrl.split('/')[1]);
+    console.log(req.originalUrl.split("/")[1]);
 
-    if (req.originalUrl.split('/')[1] != 'api') {
+    if (req.originalUrl.split("/")[1] != "api") {
         return next();
     }
 
@@ -128,7 +105,7 @@ app.use(function (req, res, next) {
             } else {
                 var ttl = cache.cacheTTLOverride[req.originalUrl] || config.cacheTTL;
 
-                req.redis.send_command('EXPIRE', [req.originalUrl, ttl], function (err) {
+                req.redis.send_command("EXPIRE", [req.originalUrl, ttl], function (err) {
                     if (err) {
                         console.log(err);
                     }
@@ -141,7 +118,7 @@ app.use(function (req, res, next) {
 });
 
 app.get("*", function (req, res, next) {
-    if (req.url.indexOf('api') != 1) {
+    if (req.url.indexOf("api") != 1) {
         return res.sendfile(path.join(__dirname, "public", "index.html"));
     } else {
         return next();
@@ -149,19 +126,6 @@ app.get("*", function (req, res, next) {
 });
 
 async.parallel([
-    function (cb) {
-        console.log("Getting top accounts...");
-        topAccounts(app.get("crypti address"), function (err, accounts) {
-            if (err) {
-                console.log("Error getting top accounts...");
-                cb(err);
-            } else {
-                app.topAccounts = accounts;
-                console.log("Got top accounts!");
-                cb();
-            }
-        });
-    },
     function (cb) { app.exchange.loadBTCUSD(cb) },
     function (cb) { app.exchange.loadXCRBTC(cb) }
 ], function (err) {

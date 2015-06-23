@@ -3,29 +3,21 @@
 // Setting up routes
 angular.module('cryptichain').config(function ($routeProvider) {
     $routeProvider.
-    when('/block/:blockId', {
-        templateUrl: '/views/block.html',
-        title: 'Block '
-    }).
-    when('/block-index/:blockHeight', {
-        controller: 'BlocksController',
-        templateUrl: '/views/redirect.html'
-    }).
-    when('/tx/:txId/:v_type?/:v_index?', {
-        templateUrl: '/views/transaction.html',
-        title: 'Transaction '
-    }).
     when('/', {
         templateUrl: '/views/index.html',
         title: 'Home'
     }).
-    when('/blocks', {
-        templateUrl: '/views/block_list.html',
-        title: 'Blocks List'
+    when('/blocks/:page?', {
+        templateUrl: '/views/blocks.html',
+        title: 'Blocks'
     }).
-    when('/blocks-date/:blockDate?', {
-        templateUrl: '/views/block_list.html',
-        title: 'Blocks List'
+    when('/block/:blockId', {
+        templateUrl: '/views/block.html',
+        title: 'Block '
+    }).
+    when('/tx/:txId', {
+        templateUrl: '/views/transaction.html',
+        title: 'Transaction '
     }).
     when('/address/:address', {
         templateUrl: '/views/address.html',
@@ -38,6 +30,10 @@ angular.module('cryptichain').config(function ($routeProvider) {
     .when("/topAccounts", {
         templateUrl : "/views/topAccounts.html",
         title: "Top Accounts"
+    })
+    .when("/delegateMonitor", {
+        templateUrl : "/views/delegateMonitor.html",
+        title: "Delegate Monitor"
     })
     .when("/networkMonitor", {
         templateUrl : "/views/networkMonitor.html",

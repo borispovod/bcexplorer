@@ -12,10 +12,10 @@
       <div id="sigma-canvas" width="512" height="512">
         <div class="hud hud-loading" data-ng-if="activityGraph.loading">
           <div class="text-muted">
-            <span>Loading Graph <span class="loader-gif"></span>
+            <span>Loading Graph <i class="fa fa-spinner fa-spin"></i></span>
           </div>
         </div>
-        <div class="hud hud-node" data-ng-show="nodeSelect.selected()">
+        <div class="hud hud-node" data-ng-if="nodeSelect.selected()">
           <div class="btn-group" role="group" aria-label="Node Buttons">
             <button type="button" class="btn btn-default btn-lg" ng-click="nodeSelect.remove()" title="Cancel/remove node selection"><span class="glyphicon glyphicon-remove-sign"></span></button>
             <a class="btn btn-default btn-lg" ng-href="{{nodeSelect.href()}}" target="_new" role="button" title="Open selected node in block explorer"><span class="glyphicon glyphicon-new-window"></span></a>
@@ -53,28 +53,30 @@
       <hr />
 
       <h4>Statistics</h4>
-      <table class="table table-responsive">
-        <tr>
-          <th>Txs</th>
-          <td>{{statistics.txs}}</td>
-        </tr>
-        <tr>
-          <th>Volume</th>
-          <td>{{statistics.volume}} <span class="text-muted">XCR</span></td>
-        </tr>
-        <tr>
-          <th>Blocks</th>
-          <td>{{statistics.blocks}}</td>
-        </tr>
-        <tr>
-          <th>Timespan</th>
-          <td>{{statistics.beginning | timeSpan:statistics.end}}</td>
-        </tr>
-        <tr>
-          <th>Accounts</th>
-          <td>{{statistics.accounts}}</td>
-        </tr>
-      </table>
+      <div class="table-responsive">
+        <table class="table">
+          <tr>
+            <th>Txs</th>
+            <td>{{statistics.txs}}</td>
+          </tr>
+          <tr>
+            <th>Volume</th>
+            <td>{{statistics.volume}} <span class="text-muted">XCR</span></td>
+          </tr>
+          <tr>
+            <th>Blocks</th>
+            <td>{{statistics.blocks}}</td>
+          </tr>
+          <tr>
+            <th>Timespan</th>
+            <td>{{statistics.beginning | timeSpan:statistics.end}}</td>
+          </tr>
+          <tr>
+            <th>Accounts</th>
+            <td>{{statistics.accounts}}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>

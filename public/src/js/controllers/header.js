@@ -6,10 +6,8 @@ angular.module('cryptichain.system').controller('HeaderController',
           $http.get("/api/getBlocksCount").then(function (resp) {
               if (resp.data.success) {
                   $scope.totalBlocks = resp.data.count;
-              } else {
-                  if (!$scope.totalBlocks) {
-                      $scope.totalBlocks = 0;
-                  }
+              } else if (!$scope.totalBlocks) {
+                  $scope.totalBlocks = 0;
               }
           });
       }
@@ -37,7 +35,7 @@ angular.module('cryptichain.system').controller('HeaderController',
 
       $scope.heightInterval = $interval(function () {
           $scope.getHeight();
-      }, 30000);
+      }, 10000);
 
       $scope.feeInterval = $interval(function () {
           $scope.getFee();

@@ -1,13 +1,15 @@
-var blocks = require('./blocks.js'),
+var accounts = require('./accounts.js'),
+    blocks = require('./blocks.js'),
     common = require('./common.js'),
-    accounts = require('./accounts.js'),
-    transactions = require('./transactions.js'),
-    statistics = require('./statistics.js');
+    delegates = require('./delegates.js'),
+    statistics = require('./statistics.js'),
+    transactions = require('./transactions.js');
 
 module.exports = function (app) {
+    accounts(app);
     blocks(app);
     common(app);
-    accounts(app);
-    transactions(app);
+    delegates(app);
     statistics(app);
+    transactions(app);
 }

@@ -1,31 +1,24 @@
-var api = require('../lib/api');
+var statistics = require('../lib/api/statistics');
 
 module.exports = function (app) {
-    var statistics = new api.statistics(app);
-
-    app.get('/api/statistics/getBestBlock', function (req, res) {
-        statistics.getBestBlock(
-            function (data) { res.json(data); },
-            function (data) { res.json(data); }
-        );
-    });
+    var api = new statistics(app);
 
     app.get('/api/statistics/getLastBlock', function (req, res) {
-        statistics.getLastBlock(
+        api.getLastBlock(
             function (data) { res.json(data); },
             function (data) { res.json(data); }
         );
     });
 
-    app.get('/api/statistics/getVolume', function (req, res) {
-        statistics.getVolume(
+    app.get('/api/statistics/getBlocks', function (req, res) {
+        api.getBlocks(
             function (data) { res.json(data); },
             function (data) { res.json(data); }
         );
     });
 
     app.get('/api/statistics/getPeers', function (req, res) {
-        statistics.getPeers(
+        api.getPeers(
             function (data) { res.json(data); },
             function (data) { res.json(data); }
         );
